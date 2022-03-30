@@ -104,7 +104,6 @@ export default class Scene1 extends Phaser.Scene {
     this.cursors = this.input.keyboard.createCursorKeys();
     this.keys = this.input.keyboard.addKeys("W,S,A,D,E");
     this.input.on("pointermove", this.rotatePlayer, this);
-
   }
 
   rotatePlayer(pointer) {
@@ -122,30 +121,59 @@ export default class Scene1 extends Phaser.Scene {
 
   update() {
     var theta = this.player.rotation;
+
+    // deal with movement first
     if (this.keys.W.isDown) {
-      this.player.anims.play("move", true);
-      this.background.tilePositionX += 4 * Math.cos(theta);
-      this.background.tilePositionY += 4 * Math.sin(theta);
-    } else if (this.keys.S.isDown) {
-      this.player.anims.playReverse("move", true);
-      this.background.tilePositionX -= 2 * Math.cos(theta);
-      this.background.tilePositionY -= 2 * Math.sin(theta);
-    } else if (this.keys.A.isDown) {
-      this.player.anims.play("move", true);
-      this.background.tilePositionX += Math.sin(theta);
-      this.background.tilePositionY -= Math.cos(theta);
-    } else if (this.keys.D.isDown) {
-      this.player.anims.play("move", true);
-      this.background.tilePositionX -= Math.sin(theta);
-      this.background.tilePositionY += Math.cos(theta);
-    } else if (this.cursors.shift.isDown) {
+      this.player.x += 4 * Math.cos(theta);
+      this.player.y += 4 * Math.sin(theta);
+    }
+
+    if (this.keys.S.isDown) {
+      this.player.x -= 3 * Math.cos(theta);
+      this.player.y -= 3 * Math.sin(theta);
+    }
+
+    if (this.keys.A.isDown) {
+      this.player.x += 2 * Math.sin(theta);
+      this.player.y -= 2 * Math.cos(theta);
+    }
+
+    if (this.keys.D.isDown) {
+      this.player.x -= 2 * Math.sin(theta);
+      this.player.y += 2 * Math.cos(theta);
+    }
+
+    // now deal with animations
+    if (this.cursors.shift.isDown) {
       this.player.anims.play("shoot", true);
-    } else if (this.cursors.space.isDown) {
+    }
+
+    if (this.cursors.space.isDown) {
       this.player.anims.play("melee", true);
-    } else if (this.keys.E.isDown) {
+    }
+
+    if (this.keys.E.isDown) {
       this.player.anims.play("reload", true);
-    } else if (!this.player.anims.isPlaying) {
-      this.player.anims.play("idle", false);
+    }
+
+    if (
+      !(
+        this.player.anims.getName() === "shoot" ||
+        this.player.anims.getName() === "melee" ||
+        this.player.anims.getName() === "reload"
+      )
+    ) {
+      if (this.keys.W.isDown || this.keys.A.isDown || this.keys.D.isDown) {
+        this.player.anims.play("move", true);
+      }
+
+      if (this.keys.S.isDown) {
+        this.player.anims.playReverse("move", true);
+      }
+    }
+
+    if (!this.player.anims.isPlaying) {
+      this.player.anims.play("idle", true);
     }
   }
 }
