@@ -1,4 +1,4 @@
-# Mers-$\alpha$
+# Mers-&alpha;
 
 A simple top down shooter.
 
@@ -37,7 +37,7 @@ Provided thanks to [rileygombart](https://opengameart.org/users/rileygombart) on
 Rotate player with mouse
 
 | Key |     |
-|-----|-----|
+|:-:|-----|
 |  W  | Walk forward |
 |  S  | Walk backwards |
 |  A  | Strafe left |
@@ -45,4 +45,3 @@ Rotate player with mouse
 |  E  | Reload |
 |shift| Fire |
 |space|Melee|
--------------
