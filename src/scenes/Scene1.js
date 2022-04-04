@@ -1,4 +1,5 @@
 import Phaser from "phaser";
+import Bullet from "../sprites/bullet";
 
 export default class Scene1 extends Phaser.Scene {
   constructor() {
@@ -12,6 +13,9 @@ export default class Scene1 extends Phaser.Scene {
       "/assets/images/player/shotgun"
     );
     this.load.image("background", "/assets/tilemaps/Ground_Tile_01_C.png");
+    this.load.image("bullet", "/assets/images/bullet/Bullet_12x3.png");
+
+    this.projectiles = this.add.group()
   }
 
   create() {
@@ -33,6 +37,8 @@ export default class Scene1 extends Phaser.Scene {
       "idle/survivor-idle_shotgun_0.png"
     );
 
+    this.player.originY = 0.74;
+
     const idleFrames = this.anims.generateFrameNames("shotgunPlayer", {
       start: 0,
       end: 19,
@@ -42,7 +48,7 @@ export default class Scene1 extends Phaser.Scene {
     this.anims.create({
       key: "idle",
       frames: idleFrames,
-      frameRate: 15,
+      frameRate: 5,
       repeat: -1,
     });
 
@@ -102,7 +108,7 @@ export default class Scene1 extends Phaser.Scene {
 
     // deal with input
     this.cursors = this.input.keyboard.createCursorKeys();
-    this.keys = this.input.keyboard.addKeys("W,S,A,D,E");
+    this.keys = this.input.keyboard.addKeys("W,S,A,D,E,R,Q");
     this.input.on("pointermove", this.rotatePlayer, this);
   }
 
@@ -143,16 +149,19 @@ export default class Scene1 extends Phaser.Scene {
       this.player.y += 2 * Math.cos(theta);
     }
 
+    if (Phaser.Input.Keyboard.JustDown(this.cursors.shift)) {
+      this.shootBullet();
+    }
     // now deal with animations
     if (this.cursors.shift.isDown) {
       this.player.anims.play("shoot", true);
     }
 
-    if (this.cursors.space.isDown) {
+    if (this.keys.E.isDown) {
       this.player.anims.play("melee", true);
     }
 
-    if (this.keys.E.isDown) {
+    if (this.keys.R.isDown) {
       this.player.anims.play("reload", true);
     }
 
@@ -175,5 +184,9 @@ export default class Scene1 extends Phaser.Scene {
     if (!this.player.anims.isPlaying) {
       this.player.anims.play("idle", true);
     }
+  }
+
+  shootBullet() {
+    var bullet = new Bullet(this);
   }
 }

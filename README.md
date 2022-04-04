@@ -42,6 +42,7 @@ Rotate player with mouse
 |  S  | Walk backwards |
 |  A  | Strafe left |
 |  D  | Strafe right |
-|  E  | Reload |
-|shift| Fire |
-|space|Melee|
+|  E  | Melee Attack |
+|  R  | Reload |
+|Shift| Fire |
+
